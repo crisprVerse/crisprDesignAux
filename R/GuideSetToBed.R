@@ -179,13 +179,6 @@ bedToBigBed <- function(bedFile,
 
 
 
-#> ml ucsc-utils
-#> sort -k1,1 -k2,2n hic.bed > hic_sort.bed
-#> bedToBigBed -as=hic.as -type=bed3+1 hic_sort.bed hg19.chrom.sizes hic.bb
-
-
-
-
 
 
 
