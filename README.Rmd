@@ -1,0 +1,95 @@
+---
+title: "crisprDesignAux: auxiliary functions to the crisprDesign package"
+output: 
+  github_document:
+    toc: true
+---
+
+```{r, echo=FALSE, results="hide"}
+options("knitr.graphics.auto_pdf"=TRUE, eval=TRUE)
+```
+
+Authors: Jean-Philippe Fortin
+
+Date: Sept 12, 2022
+
+# Overview
+
+`crisprDesignAux` 
+
+
+# Installation
+
+
+`crisprDesignAux` is supported for macOS, Linux and Windows machines.
+It was developed and tested on R version 4.2.1, and can be installed from 
+the Bioconductor devel branch by typing the following commands inside 
+of an R session:
+
+```{r, eval=FALSE}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install(version="devel")
+BiocManager::install("crisprDesignAux")
+```
+
+# Converting a GuideSet object to a BED file
+
+We load `crisprDesignAux` in the usual way:
+
+```{r, warnings=FALSE, message=FALSE}
+library(crisprDesignAux)
+```
+
+# GuideSet objects as SQLite databases
+
+```{r, warnings=FALSE, message=FALSE}
+library(crisprDesign)
+data(guideSetExampleFullAnnotation)
+dbfile <- tempfile() 
+GuideSetToSqlite(guideSet=guideSetExampleFullAnnotation,
+                 dbfile=dbfile)
+```
+
+We can also convert back a SQLite database into a GuideSet object:
+
+```{r, warnings=FALSE, message=FALSE}
+library(crisprBase)
+library(BSgenome.Hsapiens.UCSC.hg38)
+bsgenome <- BSgenome.Hsapiens.UCSC.hg38
+data(SpCas9, package="crisprBase")
+gs <- SqliteToGuideSet(dbfile=dbfile,
+                       bsgenome=bsgenome,
+                       crisprNuclease=SpCas9)
+```
+
+
+The `dbplyr` package is useful to interact with SQLite objects as if they were regular data.frames:
+
+```{r}
+library(dbplyr)
+con <- DBI::dbConnect(RSQLite::SQLite(), dbname = dbfile)
+gs <- tbl(con, from="primary")
+```
+
+Suppose that we wanted to filter GC content
+
+```{r}
+gs <- filter(gs, percentGC>=20 & percentGC<=80)
+```
+
+
+# License
+
+The project as a whole is covered by the MIT license. 
+
+# Reproducibility
+
+```{r}
+sessionInfo()
+```
+
+
+
+
