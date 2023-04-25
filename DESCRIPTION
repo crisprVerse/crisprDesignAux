@@ -1,7 +1,7 @@
 Package: crisprDesignAux
 Title: Auxiliary functions for crisprDesign
-Version: 0.99.0
-Date: 2023-02-20
+Version: 0.99.1
+Date: 2023-04-25
 Authors@R: person("Jean-Philippe", "Fortin", role=c("aut", "cre"), email="fortinj2@gene.com")
 License: MIT + file LICENSE
 Description: 

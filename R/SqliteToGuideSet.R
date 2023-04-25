@@ -77,7 +77,7 @@ SqliteToGuideSet <- function(dbfile,
     conn <- dbConnect(RSQLite::SQLite(), dbfile)
     on.exit(dbDisconnect(conn))
     
-    cols <- c("primary",
+    cols <- c("primaryTable",
               "alignments",
               "geneAnnotation",
               "tssAnnotation",
@@ -87,8 +87,8 @@ SqliteToGuideSet <- function(dbfile,
         dbExistsTable(conn, col)
     }, FUN.VALUE=TRUE)
     cols <- cols[exists]
-    if (!"primary" %in% cols){
-        stop("primary table must be in SQLite database.")
+    if (!"primaryTable" %in% cols){
+        stop("primaryTable table must be in SQLite database.")
     }
     tables <- lapply(cols, function(col) dbReadTable(conn, col))
     names(tables) <- cols
@@ -112,7 +112,7 @@ SqliteToGuideSet <- function(dbfile,
                                ...
 ){
     targetOrigin <- match.arg(targetOrigin)
-    primary <- tables[["primary"]]
+    primary <- tables[["primaryTable"]]
     if ("chr" %in% colnames(primary)){
         seqcol <- "chr"
     } else if ("seqnames" %in% colnames(primary)){
@@ -156,7 +156,7 @@ SqliteToGuideSet <- function(dbfile,
                                 ids,
                                 id.field="ID"
 ){
-    tables <- tables[setdiff(names(tables), "primary")]
+    tables <- tables[setdiff(names(tables), "primaryTable")]
     cols <- names(tables)
     if ("alignments" %in% cols){
         alignments(guideSet) <- .formatAlignments(tables[["alignments"]],

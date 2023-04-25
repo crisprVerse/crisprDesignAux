@@ -33,7 +33,11 @@ GuideSetToSqlite <- function(guideSet,
     tabs <- GuideSet2DataFrames(guideSet,
                                 useSpacerCoordinates=useSpacerCoordinates,
                                 primaryOnly=primaryOnly)
-
+    # Need to change primary to primaryTable as it is
+    # a reserved word in SQlite:
+    wh <- which(names(tabs)=="primary")
+    names(tabs)[wh] <- "primaryTable"
+    
     conn <- dbConnect(RSQLite::SQLite(), dbfile)
     on.exit(dbDisconnect(conn))
     for (tab in names(tabs)){
