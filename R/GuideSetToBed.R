@@ -81,10 +81,17 @@ GuideSetToBed <- function(guideSet,
                                      as.character=TRUE)
 
     outCore <-  data.frame(chr, start,end, ids, score, strand)
+    outCore$start <- format(outCore$start, scientific=FALSE)
+    outCore$end <- format(outCore$end, scientific=FALSE)
     if (style=="ucsc"){
         outAdd <- data.frame(thickStart, thickEnd)
+        outAdd$thickStart <- format(outAdd$thickStart, scientific=FALSE)
+        outAdd$thickEnd <- format(outAdd$thickEnd, scientific=FALSE)
     } else if (style=="epiviz"){
         outAdd <- data.frame(pamStart, pamEnd, cutSite, spacers)
+        outAdd$pamStart <- format(outAdd$pamStart, scientific=FALSE)
+        outAdd$pamEnd <- format(outAdd$pamEnd, scientific=FALSE)
+        outAdd$cutSite <- format(outAdd$cutSite, scientific=FALSE)
     }
     out <- cbind(outCore, outAdd)
 
