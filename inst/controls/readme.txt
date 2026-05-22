@@ -1,0 +1,1 @@
+Essential and non-essential genes downloaded from DepMap on May 21 2026
